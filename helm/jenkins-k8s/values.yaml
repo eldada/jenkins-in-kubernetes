@@ -1,0 +1,38 @@
+# Default values for jenkins-k8s.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+initContainerImage: "alpine:3.6"
+
+replicaCount: 1
+imagePullSecrets:
+image:
+  repository: jenkins
+  tag: lts
+  pullPolicy: Always
+## Set the admin user
+adminUser: admin
+## Make sure to replace the default password
+adminPassword: password
+service:
+  name: jenkins-k8s
+  type: LoadBalancer
+  ## Whitelist the IPs that can access Jenkins
+  loadBalancerSourceRanges:
+  - 0.0.0.0/0
+  externalPort: 8080
+  internalPort: 8080
+## Make sure the javaOps and resources are aligned to avoid conflicts
+javaOpts: "-Xms512m -Xmx2g"
+resources:
+  requests:
+    cpu: 100m
+    memory: 512Mi
+  limits:
+    cpu: 300m
+    memory: 2Gi
+storage:
+  persistence:
+    enabled: true
+    accessMode: ReadWriteOnce
+  capacity: 50Gi

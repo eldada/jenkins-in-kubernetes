@@ -1,0 +1,75 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "jenkins-k8s.fullname" . }}
+  labels:
+    app: {{ template "jenkins-k8s.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "jenkins-k8s.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+    {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      - name: {{ .Values.imagePullSecrets }}
+    {{- end }}
+      initContainers:
+      - name: "prepare-storage"
+        image: "{{ .Values.initContainerImage }}"
+        command:
+        - 'sh'
+        - '-c'
+        - >
+          rm -rfv /var/jenkins_home/lost+found;
+          chmod -R 777 /var/jenkins_home
+        volumeMounts:
+        - mountPath: "/var/jenkins_home"
+          name: jenkins-home
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.service.internalPort }}
+        volumeMounts:
+        - name: jenkins-home
+          mountPath: "/var/jenkins_home"
+        env:
+        - name: JAVA_OPTS
+          value: "{{ default "" .Values.javaOpts}}"
+        - name: ADMIN_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "jenkins-k8s.fullname" . }}
+              key: jenkins-admin-user
+        - name: ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ template "jenkins-k8s.fullname" . }}
+              key: jenkins-admin-password
+#        livenessProbe:
+#          httpGet:
+#            path: /login
+#            port: {{ .Values.service.internalPort }}
+#          initialDelaySeconds: 120
+#        readinessProbe:
+#          httpGet:
+#            path: /login
+#            port: {{ .Values.service.internalPort }}
+#          initialDelaySeconds: 120
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+      volumes:
+      - name: jenkins-home
+    {{- if .Values.storage.persistence.enabled }}
+        persistentVolumeClaim:
+          claimName: {{ template "jenkins-k8s.name" . }}
+    {{- else }}
+        emptyDir: {}
+    {{- end }}

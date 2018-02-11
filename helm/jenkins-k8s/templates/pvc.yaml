@@ -1,0 +1,25 @@
+{{- if .Values.storage.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ template "jenkins-k8s.name" . }}
+  labels:
+    app: {{ template "jenkins-k8s.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  accessModes:
+    - {{ .Values.storage.persistence.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.storage.capacity }}
+{{- if .Values.storage.persistence.storageClass }}
+{{- if (eq "-" .Values.storage.persistence.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.storage.persistence.storageClass }}"
+{{- end }}
+{{- end }}
+
+{{- end }}
