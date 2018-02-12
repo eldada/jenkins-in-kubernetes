@@ -7,7 +7,6 @@ blueocean-commons
 blueocean-config
 blueocean-core-js
 blueocean-dashboard
-blueocean-display-url
 blueocean-events
 blueocean-git-pipeline
 blueocean-github-pipeline
@@ -30,7 +29,6 @@ display-url-api
 docker-commons
 docker-workflow
 durable-task
-email-ext
 favorite
 ghprb
 git
@@ -56,7 +54,6 @@ handlebars
 icon-shim
 jackson2-api
 javadoc
-jenkins-design-language
 jquery-detached
 jsch
 junit
@@ -75,7 +72,6 @@ oic-auth
 openid
 openid4java
 openshift-login
-pam-auth
 pipeline-build-step
 pipeline-github-lib
 pipeline-githubnotify-step
