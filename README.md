@@ -22,6 +22,33 @@ $ docker build -t ${DOCKER_REG}/jenkins:lts-k8s .
 $ docker push ${DOCKER_REG}/jenkins:lts-k8s
 ```
 
+### Test your image
+You can build and run your container locally, if you have Docker installed
+```bash
+# Run the container you built before
+$ docker run -d --name jenkins -p 8080:8080 -v /var/run/docker.sock:/var/run/docker.sock ${DOCKER_REG}/jenkins:lts-k8s
+
+```
+- Browse to http://localhost:8080 on your local browser
+
+#### Vagrant
+You can test your Docker image using `Vagrant`. The enclosed [Vagrantfile](Vagrantfile) will provision an Ubuntu VM with Docker.
+
+- Spin up the Vagrant VM then build and run the Docker image
+```bash
+# Spin up the Vagrant VM
+$ vagrant up
+
+# SSH into the VM
+$ vagrant ssh
+
+# Go to the mounted sources repository
+$ cd /opt/provisioning
+
+# Build and run your Jenkins container as shown above
+```
+- Browse to http://localhost:8080 on your local browser
+
 ### Deploy Jenkins helm chart
 Since you are building your own version of Jenkins, you need your Kubernetes cluster to be able to pull the Docker image.
 You have to create a Docker registry secret and reference to it in your `helm install` command.
@@ -36,8 +63,12 @@ $ export DOCKER_USR=SET_YOUR_DOCKER_USERNAME_HERE
 $ export DOCKER_PWD=SET_YOUR_DOCKER_PASSWORD_HERE
 $ export DOCKER_EML=SET_YOUR_DOCKER_EMAIL_HERE
 
-$ kubectl create secret docker-registry docker-reg-secret --namespace jenkins \
-        --docker-server=${DOCKER_REG} --docker-username=${DOCKER_USR} --docker-password=${DOCKER_PWD} --docker-email=${DOCKER_EML}
+$ kubectl create secret docker-registry docker-reg-secret \
+        --namespace jenkins \
+        --docker-server=${DOCKER_REG} \
+        --docker-username=${DOCKER_USR} \
+        --docker-password=${DOCKER_PWD} \
+        --docker-email=${DOCKER_EML}
 
 
 # Deploy the Jenkins helm chart
