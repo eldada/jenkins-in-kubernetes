@@ -89,6 +89,7 @@ pipeline-stage-view
 pipeline-utility-steps
 plain-credentials
 pubsub-light
+rebuild
 resource-disposer
 scm-api
 script-security
