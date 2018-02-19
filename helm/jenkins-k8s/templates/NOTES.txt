@@ -1,3 +1,7 @@
 Jenkins for Kubernetes deployed!
 
 Get the Jenkins URL
+===================
+export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ template "jenkins-k8s.fullname" . }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+echo http://${SERVICE_IP}:{{ .Values.service.externalPort }}/
+

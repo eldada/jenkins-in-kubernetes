@@ -17,7 +17,7 @@ spec:
     - port: {{ .Values.service.externalPort }}
       targetPort: {{ .Values.service.internalPort }}
       protocol: TCP
-      name: {{ .Values.service.name }}
+      name: http
   selector:
     app: {{ template "jenkins-k8s.name" . }}
     release: {{ .Release.Name }}
