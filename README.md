@@ -82,7 +82,7 @@ $ helm upgrade --install jenkins \
         ./helm/jenkins-k8s
 ```
 
-#### Vagrant
+### Vagrant
 You can test your Docker image using `Vagrant`. The enclosed [Vagrantfile](Vagrantfile) will provision an Ubuntu VM with Docker.
 
 - Spin up the Vagrant VM then build and run the Docker image
