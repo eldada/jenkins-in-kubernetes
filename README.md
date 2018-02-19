@@ -27,38 +27,26 @@ $ export DOCKER_REG=SET_YOUR_DOCKER_REGISTRY_HERE
 # Build the image
 $ docker build -t ${DOCKER_REG}/jenkins:lts-k8s .
 
-
 # Push the image
 $ docker push ${DOCKER_REG}/jenkins:lts-k8s
 ```
 
 ### Test your image
-You can build and run your container locally, if you have Docker installed
+You can run your container locally, if you have Docker installed
+- Using the pre-built image
+```bash
+# Run the container you built before
+$ docker run -d --name jenkins -p 8080:8080 -v /var/run/docker.sock:/var/run/docker.sock eldada-docker-examples.bintray.io/jenkins:lts-k8s
+
+```
+
+- Using your built image
 ```bash
 # Run the container you built before
 $ docker run -d --name jenkins -p 8080:8080 -v /var/run/docker.sock:/var/run/docker.sock ${DOCKER_REG}/jenkins:lts-k8s
 
 ```
 - Browse to http://localhost:8080 on your local browser
-
-#### Vagrant
-You can test your Docker image using `Vagrant`. The enclosed [Vagrantfile](Vagrantfile) will provision an Ubuntu VM with Docker.
-
-- Spin up the Vagrant VM then build and run the Docker image
-```bash
-# Spin up the Vagrant VM
-$ vagrant up
-
-# SSH into the VM
-$ vagrant ssh
-
-# Go to the mounted sources repository
-$ cd /opt/provisioning
-
-# Build and run your Jenkins container as shown above
-```
-- Browse to http://localhost:8080 on your local browser
-
 
 ### Deploy Jenkins helm chart to Kubernetes
 If you are using the pre-built image `eldada-docker-examples.bintray.io/jenkins:lts-k8s`, you can install the helm chart with
@@ -94,3 +82,20 @@ $ helm upgrade --install jenkins \
         ./helm/jenkins-k8s
 ```
 
+#### Vagrant
+You can test your Docker image using `Vagrant`. The enclosed [Vagrantfile](Vagrantfile) will provision an Ubuntu VM with Docker.
+
+- Spin up the Vagrant VM then build and run the Docker image
+```bash
+# Spin up the Vagrant VM
+$ vagrant up
+
+# SSH into the VM
+$ vagrant ssh
+
+# Go to the mounted sources repository
+$ cd /opt/provisioning
+
+# Build and run your Jenkins container as shown above
+```
+- Browse to http://localhost:8080 on your local browser
