@@ -10,7 +10,17 @@ This Jenkins has the required tools to work in and with Kubernetes
 - `kubectl` command line client for working with the Kubernetes API
 - `helm` for managing your helm charts CI/CD lifecycle
 
+**IMPORTANT:** This example is for demo and testing. It should not be used a production environment!
+
+### Get the example Docker image
+You can pull an already built version of this Jenkins image from [bintray.com](https://bintray.com).
+```bash
+# Pull the image
+$ docker pull eldada-docker-examples.bintray.io/jenkins:lts-k8s
+```
+
 ### Build the Jenkins Docker image
+You can build the image yourself
 ```bash
 $ export DOCKER_REG=SET_YOUR_DOCKER_REGISTRY_HERE
 
@@ -49,14 +59,19 @@ $ cd /opt/provisioning
 ```
 - Browse to http://localhost:8080 on your local browser
 
-### Deploy Jenkins helm chart
-Since you are building your own version of Jenkins, you need your Kubernetes cluster to be able to pull the Docker image.
-You have to create a Docker registry secret and reference to it in your `helm install` command.
 
+### Deploy Jenkins helm chart to Kubernetes
+If you are using the pre-built image `eldada-docker-examples.bintray.io/jenkins:lts-k8s`, you can install the helm chart with
 ```bash
-# Create a namespace to host your Jenkins
-$ kubectl create ns jenkins
+# Deploy the Jenkins helm chart
+# (same command for install and upgrade)
+$ helm upgrade --install jenkins ./helm/jenkins-k8s
+```
 
+
+If you are building your own version of Jenkins, you need your Kubernetes cluster to be able to pull the Docker image.
+You have to create a Docker registry secret and reference to it in your `helm install` command.
+```bash
 # Create a Docker registry secret
 $ export DOCKER_REG=SET_YOUR_DOCKER_REGISTRY_HERE
 $ export DOCKER_USR=SET_YOUR_DOCKER_USERNAME_HERE
@@ -64,7 +79,6 @@ $ export DOCKER_PWD=SET_YOUR_DOCKER_PASSWORD_HERE
 $ export DOCKER_EML=SET_YOUR_DOCKER_EMAIL_HERE
 
 $ kubectl create secret docker-registry docker-reg-secret \
-        --namespace jenkins \
         --docker-server=${DOCKER_REG} \
         --docker-username=${DOCKER_USR} \
         --docker-password=${DOCKER_PWD} \
@@ -73,7 +87,7 @@ $ kubectl create secret docker-registry docker-reg-secret \
 
 # Deploy the Jenkins helm chart
 # (same command for install and upgrade)
-$ helm upgrade --install jenkins --namespace jenkins \
+$ helm upgrade --install jenkins \
         --set imagePullSecrets=docker-reg-secret \
         --set image.repository=${DOCKER_REG}/jenkins \
         --set image.tag='lts-k8s' \

@@ -7,8 +7,8 @@ initContainerImage: "alpine:3.6"
 replicaCount: 1
 imagePullSecrets:
 image:
-  repository: jenkins
-  tag: lts
+  repository: eldada-docker-examples.bintray.io/jenkins
+  tag: lts-k8s
   pullPolicy: Always
 ## Set the admin user
 adminUser: admin
