@@ -55,7 +55,7 @@ If you are using the pre-built image `eldada-docker-examples.bintray.io/jenkins:
 # (same command for install and upgrade)
 $ helm upgrade --install jenkins ./helm/jenkins-k8s
 ```
-
+**NOTE:** This helm chart deploys a pod with two containers. One for the Docker daemon and another for Jenkins. This is based on the suggestion in https://applatix.com/case-docker-docker-kubernetes-part-2/
 
 If you are building your own version of Jenkins, you need your Kubernetes cluster to be able to pull the Docker image.
 You have to create a Docker registry secret and reference to it in your `helm install` command.
