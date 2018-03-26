@@ -33,7 +33,7 @@ spec:
           name: jenkins-home
       containers:
       - name: dind-daemon
-        image: docker:1.12.6-dind
+        image: "{{ .Values.did.image.repository }}:{{ .Values.did.image.tag }}"
         resources:
           requests:
             cpu: 20m

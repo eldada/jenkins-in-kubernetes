@@ -10,6 +10,10 @@ image:
   repository: eldada-docker-examples.bintray.io/jenkins
   tag: lts-k8s
   pullPolicy: Always
+did:
+  image:
+    repository: docker
+    tag: 18.02.0-dind
 ## Set the admin user
 adminUser: admin
 ## Make sure to replace the default password
