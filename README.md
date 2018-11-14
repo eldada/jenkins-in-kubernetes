@@ -51,6 +51,9 @@ $ docker run -d --name jenkins -p 8080:8080 -v /var/run/docker.sock:/var/run/doc
 ### Deploy Jenkins helm chart to Kubernetes
 If you are using the pre-built image `eldada-docker-examples.bintray.io/jenkins:lts-k8s`, you can install the helm chart with
 ```bash
+# Init helm and tiller on your cluster
+$ helm init
+
 # Deploy the Jenkins helm chart
 # (same command for install and upgrade)
 $ helm upgrade --install jenkins ./helm/jenkins-k8s
