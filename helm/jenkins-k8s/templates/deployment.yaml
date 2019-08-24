@@ -43,6 +43,8 @@ spec:
         volumeMounts:
         - name: docker-graph-storage
           mountPath: /var/lib/docker
+        - name: jenkins-home
+          mountPath: "/var/jenkins_home"
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
