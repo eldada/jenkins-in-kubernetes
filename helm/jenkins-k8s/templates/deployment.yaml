@@ -9,6 +9,10 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ template "jenkins-k8s.name" . }}
+      release: {{ .Release.Name }}
   template:
     metadata:
       labels:
