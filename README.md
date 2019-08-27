@@ -16,7 +16,7 @@ This Jenkins has the required tools to work in and with Kubernetes
 You can pull an already built version of this Jenkins image from [bintray.com](https://bintray.com).
 ```bash
 # Pull the image
-$ docker pull eldada-docker-examples.bintray.io/jenkins:lts-k8s
+$ docker pull eldada-docker-examples.bintray.io/jenkins:lts-k8s-20190827
 ```
 
 ### Build the Jenkins Docker image
@@ -36,7 +36,7 @@ You can run your container locally, if you have Docker installed
 - Using the pre-built image
 ```bash
 # Run the container you built before
-$ docker run -d --name jenkins -p 8080:8080 -v /var/run/docker.sock:/var/run/docker.sock eldada-docker-examples.bintray.io/jenkins:lts-k8s
+$ docker run -d --name jenkins -p 8080:8080 -v /var/run/docker.sock:/var/run/docker.sock eldada-docker-examples.bintray.io/jenkins:lts-k8s-20190827
 
 ```
 

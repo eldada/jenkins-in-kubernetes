@@ -2,18 +2,26 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-initContainerImage: "alpine:3.6"
+initContainerImage: "alpine:3.10.2"
 
 replicaCount: 1
 imagePullSecrets:
 image:
   repository: eldada-docker-examples.bintray.io/jenkins
-  tag: lts-k8s
+  tag: lts-k8s-20190827
   pullPolicy: Always
 did:
   image:
     repository: docker
-    tag: 18.02.0-dind
+    tag: 18.09.8-dind
+  # Resources for the DIND container
+  resources:
+    requests:
+      cpu: 100m
+      memory: 512Mi
+    limits:
+      memory: 2Gi
+
 ## Set the admin user
 adminUser: admin
 ## Make sure to replace the default password
@@ -33,8 +41,7 @@ resources:
     cpu: 100m
     memory: 512Mi
   limits:
-    cpu: 300m
-    memory: 2Gi
+    memory: 3Gi
 storage:
   persistence:
     enabled: true
